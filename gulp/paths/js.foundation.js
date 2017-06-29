@@ -1,5 +1,7 @@
 'use strict';
 
 module.exports = [
-  './node_modules/jquery/dist/jquery.min.js'
+	'./source/js/_libs/maskedinput.min.js',
+	'./source/js/_libs/validationEngine.min.js',
+	'./source/js/_libs/validationRulesRu.js'
 ];
