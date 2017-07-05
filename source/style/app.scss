@@ -9,7 +9,7 @@
   @include retina-sprite($abiatec-group);
 } */
 
-.lorem{
+.block1{
 	width: 100px;
 	height: 100px;
 	background-color: #000;
@@ -29,7 +29,7 @@
 		background-color:#66ffff;
 	}
 }
-.lorem1{
+.block2{
 	width: 100px;
 	height: 100px;
 	background-color: #668cff;
@@ -48,10 +48,4 @@
 	@include iphone() {
 		background-color:#ffd966;
 	}
-}
-
-@include tablet() {
-html{
-	font-size: 14px;
-}
 }
