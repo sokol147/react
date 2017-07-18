@@ -8,9 +8,12 @@ block content
 	//	include ../blocks/..
 
 	//- PASTE SVG
-	// svg
-	// 	use(xlink:href=`${svgPath}#arrow`)
-
-
+	//svg
+			use(xlink:href=`${svgPath}#arrow`)
 	.block1
 	.block2
+	
+	//ul.nav
+			each link,title in nav.navPages
+				li.nav__item
+					a.nav__link(href=`${link}`) #{title}
