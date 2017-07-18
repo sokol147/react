@@ -8,12 +8,12 @@ block content
 	//	include ../blocks/..
 
 	//- PASTE SVG
-	//svg
-			use(xlink:href=`${svgPath}#arrow`)
+	+icon('vk','social__link')
+	+icon('twitter','social__link')
+	ul.nav
+		each link,title in nav.navPages
+			li.nav__item
+				a.nav__link(href=`${link}`) #{title}
 	.block1
 	.block2
-	
-	//ul.nav
-			each link,title in nav.navPages
-				li.nav__item
-					a.nav__link(href=`${link}`) #{title}
+	.lorem lorem
