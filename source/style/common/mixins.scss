@@ -43,6 +43,14 @@
 }
 
 
+
+@mixin retina() {
+    @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
+        @content;
+    }
+}
+
+
 %clearfix {
     &:after {
         content: "";
@@ -68,6 +76,79 @@
     }
 }
 
+
 @mixin rem($size){
     font-size:($size/16) + rem; 
+}
+
+
+
+
+@mixin triangle($width, $height, $bg, $direction) {
+    width: 0px;
+    height: 0px;
+    border-style: solid;
+    @if $direction=='t' {
+        border-width: 0 $width / 2 + px $height + px $width / 2 + px;
+        border-color: transparent transparent $bg transparent;
+    }
+    @if $direction=='r' {
+        border-width: $height / 2 + px 0 $height / 2 + px $width + px;
+        border-color: transparent transparent transparent $bg
+    }
+    @if $direction=='b' {
+        border-width: $height + px $width / 2 + px 0 $width / 2 + px;
+        border-color: $bg transparent transparent transparent
+    }
+    @if $direction=='l' {
+        border-width: $height / 2 + px $width + px $height / 2 + px 0;
+        border-color: transparent $bg transparent transparent;
+    }
+    @if $direction=='tl' {
+        border-width: $height + px $width + px 0 0;
+        border-color: $bg transparent transparent transparent
+    }
+    @if $direction=='tr' {
+        border-width: 0 $width + px $height + px 0;
+        border-color: transparent $bg transparent transparent
+    }
+    @if $direction=='br' {
+        border-width: 0 0 $height + px $width + px;
+        border-color: transparent transparent $bg transparent
+    }
+    @if $direction=='bl' {
+        border-width: $width + px 0 0 $height + px;
+        border-color: transparent transparent transparent $bg
+    }
+}
+
+@mixin counter($var, $sep) {
+    counter-reset: list + $var;
+    > li {
+        &:before {
+            content: counter(list + $var) $sep;
+            counter-increment: list + $var;
+        }
+    }
+}
+@mixin scrollbar() {
+    &::-webkit-scrollbar{
+        @content
+    }
+}
+
+@mixin scrollbar-track() {
+    &::-webkit-scrollbar-track{
+        @content
+    }
+}
+@mixin scrollbar-thumb() {
+    &::-webkit-scrollbar-thumb{
+        @content
+    }
+}
+@mixin scrollbar-track-piece() {
+    &::-webkit-scrollbar-track-piece{
+        @content
+    }
 }

@@ -9,43 +9,48 @@
   @include retina-sprite($abiatec-group);
 } */
 
-.block1{
-	width: 100px;
-	height: 100px;
-	background-color: #000;
-	@include wide() {
-		background-color:#66ff66;
-	}
-	@include desktop() {
-		background-color:#ff6666;
-	}
-	@include tablet() {
-		background-color:#ffb366;
-	}
-	@include mobile() {
-		background-color:#ffff66;
-	}
-	@include iphone() {
-		background-color:#66ffff;
-	}
+.block1 {
+    width: 100px;
+    height: 100px;
+    background-color: #000;
+    @include wide() {
+        background-color: #66ff66;
+    }
+    @include desktop() {
+        background-color: #ff6666;
+    }
+    @include tablet() {
+        background-color: #ffb366;
+    }
+    @include mobile() {
+        background-color: #ffff66;
+    }
+    @include iphone() {
+        background-color: #66ffff;
+    }
 }
-.block2{
-	width: 100px;
-	height: 100px;
-	background-color: #668cff;
-	@include wide() {
-		background-color:#6666ff;
-	}
-	@include desktop() {
-		background-color:#d966ff;
-	}
-	@include tablet() {
-		background-color:#ff6666;
-	}
-	@include mobile() {
-		background-color:#66ffb3;
-	}
-	@include iphone() {
-		background-color:#ffd966;
-	}
+
+.block2 {
+    width: 100px;
+    height: 100px;
+    background-color: #668cff;
+    margin-left: 1000px;
+    @include wide() {
+        background-color: #6666ff;
+    }
+    @include desktop() {
+        background-color: #d966ff;
+    }
+    @include tablet() {
+        background-color: #ff6666;
+    }
+    @include mobile() {
+        background-color: #66ffb3;
+    }
+    @include iphone() {
+        background-color: #ffd966;
+    }
+}
+.list{
+	@include counter(myList, 'test ');
 }
