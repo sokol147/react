@@ -54,3 +54,6 @@
 .list{
 	@include counter(myList, 'test ');
 }
+.tool{
+    @include tooltip(l);
+}

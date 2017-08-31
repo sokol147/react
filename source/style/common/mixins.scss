@@ -122,6 +122,99 @@
     }
 }
 
+
+@mixin tooltip($dir:t, $color:#000000, $bg:#84a02b, $br:5, $tr:.6, $offset:10, $ptb:10, $plr:10, $arrW:15, $arrH:8) {
+    position: relative;
+    cursor: pointer;
+    &:before,
+    &:after{
+        position: absolute;
+        left: -9999px;
+        opacity: 0;
+        transition: opacity $tr + s;
+    }
+    @if $dir=='t'{
+        &:before{
+            bottom: calc(100% + #{$offset}px);
+        }
+    } @else if $dir=='b' {
+        &:before{
+            top: calc(100% + #{$offset}px);
+        }
+    } @else if $dir=='l' {
+        &:before,&:after{
+            left:auto;
+            right: 9999px;
+        }
+    }
+    &:before {
+        content: attr(data-tooltip);
+        color: $color;
+        background-color: $bg;
+        padding: $ptb+px $plr+px;
+        border-radius: $br+px; 
+        //white-space: nowrap;
+    }
+    &:after {
+        $arrDir: $dir;
+        $arrWN: $arrW;
+        $arrHN: $arrH;
+        content: '';
+        @if $dir=='t' {
+            bottom: calc(100% + #{$offset}px - #{$arrHN}px);
+            $arrDir: b;
+        } @else if $dir=='r' {
+            $arrDir: l;
+            $arrHN: $arrW;
+            $arrWN: $arrH;
+        } @else if $dir=='b' {
+            $arrDir: t;
+            top: calc(100% + #{$offset}px - #{$arrHN}px);
+        } @else if $dir=='l' {
+            $arrDir: r;
+            $arrHN: $arrW;
+            $arrWN: $arrH;
+        }
+        @include triangle($arrWN, $arrHN, $bg, $arrDir) 
+    }
+    &:hover {
+        $arrDir: $dir;
+        $arrWN: $arrW;
+        $arrHN: $arrH;
+        &:before,
+        &:after {
+            opacity: 1;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        @if $dir=='r' {
+            &:before,&:after{
+                top:50%;
+                transform:translateY(-50%);
+            }
+            &:before{
+                left: calc(100% + #{$offset}px);
+            }
+            &:after{
+                left: calc(100% + #{$offset}px - #{$arrHN}px);
+            }
+        }@else if $dir=='l' {
+            &:before,&:after{
+                top:50%;
+                left:auto;
+                transform:translateY(-50%);
+            }
+            &:before{
+                right: calc(100% + #{$offset}px);
+            }
+            &:after{
+                right: calc(100% + #{$offset}px - #{$arrHN}px);
+                @debug #{$offset};
+            }
+        }
+    }
+}
+
 @mixin counter($var, $sep) {
     counter-reset: list + $var;
     > li {
