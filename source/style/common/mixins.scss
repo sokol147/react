@@ -160,20 +160,20 @@
         $arrWN: $arrW;
         $arrHN: $arrH;
         content: '';
-        @if $dir=='t' {
-            bottom: calc(100% + #{$offset}px - #{$arrHN}px);
-            $arrDir: b;
-        } @else if $dir=='r' {
-            $arrDir: l;
+        @if $dir=='r' or $dir=='l'{
             $arrHN: $arrW;
             $arrWN: $arrH;
+        }
+        @if $dir=='t' {
+            $arrDir: b;
+            bottom: calc(100% + #{$offset}px - #{$arrHN}px);
+        } @else if $dir=='r' {
+            $arrDir: l;
         } @else if $dir=='b' {
             $arrDir: t;
             top: calc(100% + #{$offset}px - #{$arrHN}px);
         } @else if $dir=='l' {
             $arrDir: r;
-            $arrHN: $arrW;
-            $arrWN: $arrH;
         }
         @include triangle($arrWN, $arrHN, $bg, $arrDir) 
     }
@@ -187,11 +187,13 @@
             left: 50%;
             transform: translateX(-50%);
         }
-        @if $dir=='r' {
+        @if $dir=='r' or $dir=='l'{
             &:before,&:after{
                 top:50%;
                 transform:translateY(-50%);
             }
+        }
+        @if $dir=='r' {
             &:before{
                 left: calc(100% + #{$offset}px);
             }
@@ -200,16 +202,13 @@
             }
         }@else if $dir=='l' {
             &:before,&:after{
-                top:50%;
                 left:auto;
-                transform:translateY(-50%);
             }
             &:before{
                 right: calc(100% + #{$offset}px);
             }
             &:after{
                 right: calc(100% + #{$offset}px - #{$arrHN}px);
-                @debug #{$offset};
             }
         }
     }

@@ -55,5 +55,18 @@
 	@include counter(myList, 'test ');
 }
 .tool{
-    @include tooltip(l);
+    @include tooltip(r);
+    @include centered();
+    &:before{
+        width: 100%;
+        max-width: 300px;
+    }
 }
+
+$status-colors: (
+  primary: #000,
+  success: #27BA6C,
+  info: #03a9f4,
+  warning: #FF8833,
+  danger: #ff1a1a
+);
