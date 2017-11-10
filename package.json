@@ -1,5 +1,5 @@
 {
-  "name": "X4-new-project-template",
+  "name": "sokol147-project-template",
   "devDependencies": {
     "browser-sync": "~2.18.7",
     "del": "~3.0.0",
