@@ -1,0 +1,47 @@
+.hero{
+	height: 600px;
+	overflow: hidden;
+	position: relative;
+	&__bg-img{
+		max-width: 100%;
+		width: 100%;
+	}
+}
+.hero__title{
+	position: absolute;
+	@include centered('y');
+	text-align: center;
+	width: 100%;
+}
+.section-title{
+	display: inline-block;
+}
+.user__name{
+	font-size: 35px;
+	font-weight: bold;
+	color: #fff;
+}
+.user__desc{
+	font-size: 16px;
+	color: #fff;
+	opacity: 0.7;
+}
+.user__photo{
+	margin-bottom: 35px;
+}
+.user__photo-avatar{
+	width: 145px;
+	height: 145px;
+	display: block;
+	margin: 0 auto;
+}
+.user__photo-img{
+	max-width: 100%;
+	border-radius: 100%;
+}
+.down-arrow{
+	position: absolute;
+	bottom: 40px;
+	@include centered('x');
+	z-index: 10;
+}

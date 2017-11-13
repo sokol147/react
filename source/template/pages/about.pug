@@ -1,0 +1,70 @@
+extends ../_template
+
+block variables
+	- var title = ['About me','index page description','index page keywords']
+
+block content
+	//- INCLUDE BLOCKS
+	//	include ../blocks/..
+
+	.wrapper
+		section.section.hero
+			.hero__bg
+				img(src='templates/_ares/images/bg/portfolio.jpg').hero__bg-img
+			ul.socials
+				each item in ['fb', 'gh', 'in']
+					li.socials__item
+						a(href='' class=`socials__link socials__link_${item}`)
+
+			a(href='').hamburger
+
+			a(href='').down-arrow
+				img(src='templates/_ares/images/icons/arrow_down.svg').down-arrow__icon
+
+			.hero__title
+				img(src='' atl='').section-title
+				.user.hero__user-block
+					.user__photo
+						.user__photo-avatar
+							img(src='templates/_ares/images/logo.jpg' alt='').user__photo-img
+					.user__name Vladislav Sokolov
+					.user__desc Personal development site
+
+		section.section.about
+			.about__left
+				svg(viewbox='0 0 1000 100' preserveAspectRatio='none').triangle.triangle_fill_white.about__triangles
+					polygon(points='0,0 0,100 1000,100')
+					.title.about__section-title
+						| About me
+					.user-about
+						.user-about__picture
+						.user-about__title
+							.subtitle
+								| Who am I
+						.user-about__text
+							p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nemo autem cupiditate facilis, quis consequuntur blanditiis!
+							p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nemo autem cupiditate facilis, quis consequuntur blanditiis!
+			.about__right
+				svg(viewbox='0 0 1000 100' preserveAspectRatio='none').triangle.triangle_fill_beige.about__triangles
+					polygon(points='0,100 1000,100 1000,0')
+					.about-data
+						.about-data__description.about-user-info
+							.about-user-info__title
+								.subtitle
+									| How I can halp you
+							.about-user-info__text
+								p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur nulla iusto repellat laboriosam, quisquam alias.
+						.about-data__content
+							ul.skills
+								each skill in content.skills
+									each skillsArray, skillName in skill
+										li.skills__item
+											.skill-section
+												.skill-section__title= skillName
+												ul.skill-section__list
+													each skillTitle in skillsArray
+														li.skill-section__item
+															.skill
+																svg.skill__circle
+																.skill__name= skillTitle
+		section.section.map

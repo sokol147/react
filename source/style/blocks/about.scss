@@ -1,0 +1,53 @@
+$main-font-color: #373e42;
+$white: #efeee9;
+$beige: #eeebdf;
+.about{
+	display: flex;
+	&__left{
+		width: 50%;
+		background-color: $white;
+		position: relative;
+		.triangle{
+			fill: $white;
+		}
+	}
+	&__right{
+		width: 50%;
+		background-color: $beige;
+		position: relative;
+		.triangle{
+			fill: $beige;
+		}
+	}
+}
+.triangle{
+	height: 100px;
+	width: 100%;
+}
+.about__triangles{
+	position: absolute;
+	bottom: 100%;
+}
+.title{
+	color: $main-font-color;
+	font-size: 63px;
+	font-family: 'bernier';
+	padding: 45px 80px;
+	position: relative;
+	&:after,&:before{
+		content: '';
+		display: block;
+		position: absolute;
+		@include centered('y');
+		background-color: $main-font-color;
+		opacity: 0.2;
+		width: 22px;
+		height: 5px;
+	}
+	&:before{
+		left: 40px;
+	}
+	&:after{
+		right: 40px;
+	}
+}
