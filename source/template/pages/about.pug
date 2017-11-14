@@ -38,11 +38,12 @@ block content
 						| About me
 					.user-about
 						.user-about__picture
+							img(src='templates/_ares/images/hero_photo.jpg' alt='').user-about__photo
 						.user-about__title
 							.subtitle
 								| Who am I
 						.user-about__text
-							p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nemo autem cupiditate facilis, quis consequuntur blanditiis!
+							p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nemo autem cupiditate facilis, quis consequuntur blanditiis! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nemo autem cupiditate facilis, quis consequuntur blanditiis!
 							p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nemo autem cupiditate facilis, quis consequuntur blanditiis!
 			.about__right
 				svg(viewbox='0 0 1000 100' preserveAspectRatio='none').triangle.triangle_fill_beige.about__triangles
@@ -51,7 +52,9 @@ block content
 						.about-data__description.about-user-info
 							.about-user-info__title
 								.subtitle
-									| How I can halp you
+									| How I can
+									br
+									|help you
 							.about-user-info__text
 								p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur nulla iusto repellat laboriosam, quisquam alias.
 						.about-data__content
@@ -62,9 +65,12 @@ block content
 											.skill-section
 												.skill-section__title= skillName
 												ul.skill-section__list
-													each skillTitle in skillsArray
-														li.skill-section__item
-															.skill
-																svg.skill__circle
-																.skill__name= skillTitle
+													each tech in skillsArray
+														each skillProc, skillTitle in tech
+															li.skill-section__item
+																.skill
+																	svg(viewbox='0 0 110 110').skill__circle
+																		circle(r='45' cx='50%' cy='50%' fill='none').circle__first
+																		circle(r='45' cx='50%' cy='50%' transform='rotate(-90 55 55)' class=`circle-${skillProc}`).circle__second
+																	.skill__name= skillTitle
 		section.section.map

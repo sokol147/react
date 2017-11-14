@@ -1,11 +1,19 @@
 {
 	"skills" : [
 		{
-			"Frontend" : ["HTML5","CSS3","JavaScript"]
+			"Frontend" : [
+				{
+					"HTML5" : 80
+				},{
+					"CSS3 (SCSS)" : 75
+				},{
+					"JavaScript & Jquery" : 50
+				}
+			]
 		},{
-			"Backend" : ["PHP","mySQL","Node.js & npm", "Mongo.db"]
+			"Backend" : [{"PHP": 10},{"mySQL": 10},{"Node.js & npm": 30},{"Mongo.db": 10}]
 		},{
-			"workFlow" : ["Git","Gulp","Bower"]
+			"WorkFlow" : [{"Git" : 60},{"Gulp": 70},{"Bower": 10}]
 		}
 	]
 }

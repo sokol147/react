@@ -1,14 +1,19 @@
 $main-font-color: #373e42;
+$font-color: #455a64;
+$accent-color: #1bb696;
 $white: #efeee9;
 $beige: #eeebdf;
 .about{
 	display: flex;
+	color: $font-color;
 	&__left{
 		width: 50%;
 		background-color: $white;
 		position: relative;
+		text-align: center;
 		.triangle{
 			fill: $white;
+			left: 0;
 		}
 	}
 	&__right{
@@ -17,6 +22,7 @@ $beige: #eeebdf;
 		position: relative;
 		.triangle{
 			fill: $beige;
+			right:0;
 		}
 	}
 }
@@ -31,9 +37,11 @@ $beige: #eeebdf;
 .title{
 	color: $main-font-color;
 	font-size: 63px;
-	font-family: 'bernier';
 	padding: 45px 80px;
 	position: relative;
+	display: inline-block;
+	text-transform: uppercase;
+	font-weight: 600;
 	&:after,&:before{
 		content: '';
 		display: block;
@@ -50,4 +58,161 @@ $beige: #eeebdf;
 	&:after{
 		right: 40px;
 	}
+}
+.user-about__picture{
+	height: 390px;
+	margin: 0 auto;
+	overflow: hidden;
+}
+.user-about{
+	padding: 0 90px;
+}
+.user-about__photo{
+	margin-top: -50px;
+	max-width: 100%;
+	width: 100%;
+}
+.subtitle{
+	color: $main-font-color;
+	font-size: 35px;
+	font-weight: bold;
+	text-transform: uppercase;
+	padding: 38px 65px;
+	display: inline-block;
+	position: relative;
+	&:after,&:before{
+		content: '';
+		display: block;
+		position: absolute;
+		@include centered('y');
+		background-color: $main-font-color;
+		opacity: 0.2;
+		width: 22px;
+		height: 5px;
+	}
+	&:before{
+		left: 30px;
+	}
+	&:after{
+		right: 30px;
+	}
+}
+.user-about__text p{
+	text-align: left;
+	margin-bottom: 24px;
+	font-size: 16px;
+	line-height: 24px;
+	color: $font-color;
+}
+.about-user-info__title{
+	text-align: center;
+}
+.about-data{
+	padding-left:40px;
+}
+.about-user-info__text p{
+	color: $font-color;
+	font-size: 16px;
+	line-height: 24px;
+	margin-bottom: 60px;
+}
+.skill-section__title{
+	color: $font-color;
+	font-size: 28px;
+	line-height: 32px;
+	font-weight: bold;
+	margin-bottom: 20px;
+}
+.skill-section__list{
+	margin-bottom: 40px;
+}
+.skill-section__item{
+	display: inline-block;
+}
+.skill{
+	width: 110px;
+	height: 110px;
+	display: inline-block;
+	position: relative;
+	margin-right: 30px;
+}
+.skill__name{
+	position: absolute;
+	@include centered('both');
+	font-size: 12px;
+	text-align: center;
+	color: $accent-color;
+	font-weight: bold;
+}
+.skill__circle{
+	stroke-width: 15;
+	fill: none;
+}
+.circle__first{
+	stroke: #dfdcd5;
+}
+.circle__second{
+	stroke: $accent-color;
+	stroke-dasharray: .0010 282.6;
+	transition: all 1s;
+}
+.circle-0{
+	stroke-dasharray: .001 282.6;
+}
+.circle-10{
+	stroke-dasharray: 28.26 282.6;
+}
+.circle-15{
+	stroke-dasharray: 42.39 282.6;
+}
+.circle-20{
+	stroke-dasharray: 56.52 282.6;
+}
+.circle-25{
+	stroke-dasharray: 70.65 282.6;
+}
+.circle-30{
+	stroke-dasharray: 84.78 282.6;
+}
+.circle-35{
+	stroke-dasharray: 98.91 282.6;
+}
+.circle-40{
+	stroke-dasharray: 113.04 282.6;
+}
+.circle-45{
+	stroke-dasharray: 127.17 282.6;
+}
+.circle-50{
+	stroke-dasharray: 141.3 282.6;
+}
+.circle-55{
+	stroke-dasharray: 155.43 282.6;
+}
+.circle-60{
+	stroke-dasharray: 169.56 282.6;
+}
+.circle-65{
+	stroke-dasharray: 183.69 282.6;
+}
+.circle-70{
+	stroke-dasharray: 197.82 282.6;
+}
+.circle-75{
+	stroke-dasharray: 211.95 282.6;
+}
+.circle-80{
+	stroke-dasharray: 226.08 282.6;
+}
+.circle-85{
+	stroke-dasharray: 240.21 282.6;
+}
+.circle-90{
+	stroke-dasharray: 254.34 282.6;
+}
+.circle-95{
+	stroke-dasharray: 268.47 282.6;
+}
+.circle-100{
+	stroke-dasharray: 282.6 282.6;
 }
