@@ -1,0 +1,66 @@
+$main-font-color: #373e42;
+$font-color: #455a64;
+$accent-color: #1bb696;
+
+.map__contacts{
+	height: 800px;
+	display: flex;
+}
+.contact{
+	display: inline-block;
+	width: 380px;
+	text-align: center;
+	background-color: rgba(#fff,.6);
+	margin: auto;
+}
+.map{
+	background-image: url('../images/bg/map.jpg');
+	background-size: cover;
+}
+.contact__list{
+	padding-left: 40px;
+	text-align: left;
+}
+.contact__item{
+	font-size: 16px;
+	color: $font-color;
+	font-weight: 600;
+	margin-bottom: 15px;
+	opacity: .8;
+	display: flex;
+	&:before{
+		width: 25px;
+		text-align: center;
+	}
+}
+.contact__item-skype:before{
+	content: url(../images/icons/skype.svg);
+	margin-right: 10px;
+}
+.contact__item-email:before{
+	content: url(../images/icons/envelope.svg);
+	margin-right: 10px;
+}
+.contact__item-timezone:before{
+	content: url(../images/icons/phone.svg);
+	margin-right: 10px;
+}
+.contact__item-local:before{
+	content: url(../images/icons/map_marker.svg);
+	margin-right: 10px;
+}
+.footer{
+	background-color: rgba(#000,.7);
+	color: #fff;
+	padding: 27px 30px;
+}
+.footer__menu{
+	.menu__item{
+		display: inline-block;
+		margin-right: 40px;
+	}
+	.menu__link{
+		color: #fff;
+		text-decoration: none;
+	}
+}

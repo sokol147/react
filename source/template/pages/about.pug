@@ -2,6 +2,14 @@ extends ../_template
 
 block variables
 	- var title = ['About me','index page description','index page keywords']
+	- var menu = ['Works','About Me','Blog','LogIn']
+	-
+		var contacts = {
+			skype:'vlad.socol',
+			email:'sokolov.stb@gmail.com',
+			timezone:'(GMT+1)',
+			local:'Poland, Katowice'
+		}
 
 block content
 	//- INCLUDE BLOCKS
@@ -73,4 +81,22 @@ block content
 																		circle(r='45' cx='50%' cy='50%' fill='none').circle__first
 																		circle(r='45' cx='50%' cy='50%' transform='rotate(-90 55 55)' class=`circle-${skillProc}`).circle__second
 																	.skill__name= skillTitle
+
+
+
 		section.section.map
+			.map__contacts
+				.contact
+					.contact__title.subtitle Contacts
+					ul.contact__list
+						each contactItem, contactIcon in contacts
+							li.contact__item(class=`contact__item-${contactIcon}`)= contactItem
+			footer.footer
+				ul.menu.footer__menu
+					each item in menu
+						li.menu__item
+							a(href='#').menu__link= item
+				//- ul.social
+				//- 	each item in social
+				//- 		li.social__item
+				//- 			a(href='#').social__link

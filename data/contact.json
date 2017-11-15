@@ -1,0 +1,29 @@
+{
+	"contacts":[
+		{
+			"skype":[
+				{
+					"vlad.socol": "skype"
+				}
+			]
+		},{
+			"email":[
+				{
+					"sokolov.stb@gmail.com":"email"
+				}
+			]
+		},{
+			"timezone":[
+				{
+					"+5":"timezone"
+				}
+			]
+		},{
+			"address":[
+				{
+					"Poland, Katowice":"address"
+				}
+			]
+		}
+	]
+}
