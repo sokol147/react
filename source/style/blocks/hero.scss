@@ -7,6 +7,11 @@
 		width: 100%;
 	}
 }
+.hamburger{
+	position: absolute;
+	top: 25px;
+	right: 25px;
+}
 .hero__title{
 	position: absolute;
 	@include centered('y');
@@ -44,4 +49,8 @@
 	bottom: 40px;
 	@include centered('x');
 	z-index: 10;
+}
+.header__social{
+	position: absolute;
+	top:30px;
 }

@@ -2,7 +2,18 @@ extends ../_template
 
 block variables
 	- var title = ['About me','index page description','index page keywords']
-	- var menu = ['Works','About Me','Blog','LogIn']
+	-
+		var menu = {
+			'/works.html':'Works',
+			'/about.html':'About Me',
+			'/blog.html':'Blog',
+			'/login.html':'LogIn'
+		}
+	-
+		var social = {
+			'https://www.facebook.com/profile.php?id=100004486651738':'facebook',
+			'https://github.com/sokol147':'github'
+		}
 	-
 		var contacts = {
 			skype:'vlad.socol',
@@ -19,12 +30,13 @@ block content
 		section.section.hero
 			.hero__bg
 				img(src='templates/_ares/images/bg/portfolio.jpg').hero__bg-img
-			ul.socials
-				each item in ['fb', 'gh', 'in']
-					li.socials__item
-						a(href='' class=`socials__link socials__link_${item}`)
+			ul.social.header__social
+					each socialClass,socialLink in social
+						li.social__item(class=`social__item-${socialClass}`)
+							a(href=`${socialLink}`).social__link
 
-			a(href='').hamburger
+			a(href='#').hamburger
+				img(src='templates/_ares/images/icons/hamburger.svg').hamburger__icon
 
 			a(href='').down-arrow
 				img(src='templates/_ares/images/icons/arrow_down.svg').down-arrow__icon
@@ -93,10 +105,10 @@ block content
 							li.contact__item(class=`contact__item-${contactIcon}`)= contactItem
 			footer.footer
 				ul.menu.footer__menu
-					each item in menu
+					each menuItem, menuLink in menu
 						li.menu__item
-							a(href='#').menu__link= item
-				//- ul.social
-				//- 	each item in social
-				//- 		li.social__item
-				//- 			a(href='#').social__link
+							a(href=`${menuLink}`).menu__link= menuItem
+				ul.social.footer__social
+					each socialClass,socialLink in social
+						li.social__item(class=`social__item-${socialClass}`)
+							a(href=`${socialLink}`).social__link
