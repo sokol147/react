@@ -12,6 +12,14 @@
 $main-font-color: #373e42;
 $font-color: #455a64;
 
+html{
+  @include tablet {
+    font-size: 14px;
+  }
+  @include mobile {
+    font-size: 13px;
+  }
+}
 ul,ol,li{
   margin: 0;
   padding: 0;
@@ -38,6 +46,10 @@ h1,h2,h3,h4,h5,h6{
 }
 body{
     font-family: 'Raleway', sans-serif;
+    height: 100%;
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.42;
 }
 .app{
   max-width: 720px;

@@ -1,10 +1,18 @@
 .hero{
-	height: 600px;
+	min-height: 600px;
 	overflow: hidden;
 	position: relative;
+	height: 100vh;
 	&__bg-img{
-		max-width: 100%;
-		width: 100%;
+		max-width: 180%;
+		display: block;
+	}
+	&__bg{
+		position: absolute;
+		top:0;
+		left: 0;
+		right: 0;
+		height: 1270px;
 	}
 }
 .hamburger{

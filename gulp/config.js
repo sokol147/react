@@ -14,11 +14,11 @@ module.exports = {
     },
     build: {
         html: './build',
-        js: './build/templates/_ares/js',
-        jsLibs: './build/templates/_ares/js/libs',
-        css: './build/templates/_ares/css',
-        img: './build/templates/_ares/images',
-        fonts: './build/templates/_ares/fonts',
+        js: './build/templates/js',
+        jsLibs: './build/templates/js/libs',
+        css: './build/templates/css',
+        img: './build/templates/images',
+        fonts: './build/templates/fonts',
         spriteImg: './source/images/img',
         spriteCss:'./source/style/common'
     },

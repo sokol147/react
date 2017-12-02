@@ -29,24 +29,24 @@ block content
 	.wrapper
 		section.section.hero
 			.hero__bg
-				img(src='templates/_ares/images/bg/portfolio.jpg').hero__bg-img
+				img(src='templates/images/bg/portfolio.jpg').hero__bg-img
 			ul.social.header__social
 					each socialClass,socialLink in social
 						li.social__item(class=`social__item-${socialClass}`)
 							a(href=`${socialLink}`).social__link
 
 			a(href='#').hamburger
-				img(src='templates/_ares/images/icons/hamburger.svg').hamburger__icon
+				img(src='templates/images/icons/hamburger.svg').hamburger__icon
 
 			a(href='').down-arrow
-				img(src='templates/_ares/images/icons/arrow_down.svg').down-arrow__icon
+				img(src='templates/images/icons/arrow_down.svg').down-arrow__icon
 
 			.hero__title
 				img(src='' atl='').section-title
 				.user.hero__user-block
 					.user__photo
 						.user__photo-avatar
-							img(src='templates/_ares/images/logo.jpg' alt='').user__photo-img
+							img(src='templates/images/logo.jpg' alt='').user__photo-img
 					.user__name Vladislav Sokolov
 					.user__desc Personal development site
 
@@ -58,7 +58,7 @@ block content
 						| About me
 					.user-about
 						.user-about__picture
-							img(src='templates/_ares/images/hero_photo.jpg' alt='').user-about__photo
+							img(src='templates/images/hero_photo.jpg' alt='').user-about__photo
 						.user-about__title
 							.subtitle
 								| Who am I
