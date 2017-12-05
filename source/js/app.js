@@ -8,42 +8,46 @@ $(document).ready(function() {
 
 // AJAX
 
-var button = document.querySelector('#upload');
-var result = document.querySelector('#result');
-var result2 = document.querySelector('#result2');
+var button = document.querySelector('#button'),
+    result = document.querySelector('#result tbody');
 
-function loadFile(url){
-  return new Promise(function(resolve, reject){
+function loadFile(file){
+  return new Promise(function(resolve,reject){
     var xhr = new XMLHttpRequest();
 
-    xhr.open('GET', url);
+    xhr.open('GET', file);
+    xhr.responseType = 'json';
     xhr.send();
-    xhr.addEventListener('load',function(){
-      if(xhr.status>=400){
-        reject();
-      }else{
-        resolve(xhr.response);
+    xhr.addEventListener('load', function(){
+      if(xhr.status >= 400){
+        reject(xhr.status);
+      } else {
+        console.log(xhr.response);
+
+        resolve(xhr.response)
       }
-    });
+    })
     xhr.addEventListener('error', function(){
-      reject();
-    });
-  })
+      reject(xhr.status);
+    })
+  });
 }
 
 button.addEventListener('click',function(){
-  loadFile('test.txt')
+  loadFile('students.json')
     .then(function(value){
-      console.log('file load 100%');
-      result.innerHTML = value;
+      console.log(value);
 
-      return loadFile('text2.txt');
+      for(let el of value){
+        let tr = document.createElement('tr');
+        let td = document.createElement('td');
+
+        tr.appendChild(td);
+        td.innerHTML = el.name;
+        result.appendChild(tr);
+      }
     })
-    .then(function(value){
-      result2.innerHTML += value;
-    });
-  });
-
+});
 
 
 // Promis
