@@ -72,59 +72,59 @@ window.onscroll= function(){
   parallax.init(wScroll);
 };
 
-ReactDOM.render(
-  React.DOM.div(
-    {
-      id: 'div',
-      className: 'div',
-      style: {
-        width: '100%',
-        height: '50px',
-        backgroundColor: 'black',
-        color: 'white'
-      }
-    },
-    React.DOM.span(
-    {
-      id: 'span',
-      className: 'span',
-      style: {
-        color: 'red'
-      }
-    }, 'span in div')),
-  document.getElementById('creacte-component')
-);
 
-// for create component
-var myComponent = React.createClass({
-  render: function(){
-    return React.DOM.div(
-      {
-        id: 'div',
-        className: 'div'
-      },"I'm so custom");
-  }
+var name = React.createClass({
+	propTypes: {
+		name: React.PropTypes.string.isRequired
+	},
+	getDefaultProps: function(){
+		return{
+			name: 'Vlad'
+		}
+	},
+	render: function(){
+		return React.DOM.p(null,'My name is ' + 
+		this.props.name)
+	}
 });
 
-var mySecondComponent = React.createClass({
-  render: function(){
-    return React.DOM.div(null,'asdfadf')
-  }
-})
-
-// Used custom component
 ReactDOM.render(
-  React.createElement(myComponent),
-  document.getElementById('mcc')
-);
-
-ReactDOM.render(
-  React.createElement(mySecondComponent),
-  document.getElementById('mcc2')
+	React.createElement(name,
+		{
+			name: 'Vlad'
+		}
+	),
+	document.getElementById('name')
 );
 
 
 
+var surname = React.createClass({
+	propTypes: {
+		surname: React.PropTypes.string.isRequired
+	},
+	getDefaultProps: function(){
+		return{
+			surname: 'Sokolov'
+		}
+	},
+	render: function(){
+		return React.DOM.span(
+			{
+				className: 'surname'
+			},
+			'My surname is ' + this.props.surname)
+	}
+});
+
+ReactDOM.render(
+	React.createElement(surname, 
+	{
+		surname: 'Sokolov'
+	}
+	),
+	document.getElementById('surname')
+);
 
 /*
 
