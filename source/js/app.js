@@ -97,33 +97,62 @@ ReactDOM.render(
 	document.getElementById('name')
 );
 
-
-
 var surname = React.createClass({
-	propTypes: {
+	PropsType: {
 		surname: React.PropTypes.string.isRequired
 	},
 	getDefaultProps: function(){
-		return{
+		return {
 			surname: 'Sokolov'
 		}
 	},
 	render: function(){
-		return React.DOM.span(
-			{
-				className: 'surname'
-			},
-			'My surname is ' + this.props.surname)
+		return React.DOM.p(null,'My surname is ' 
+		+ this.props.surname);
+	}
+})
+
+ReactDOM.render(
+	React.createElement(surname,
+		{
+			surname: 'Sousov'
+		}
+		),
+	document.getElementById('surname')
+)
+
+
+
+var TextAreaCounter = React.createClass({
+	propTypes: {
+		text: React.PropTypes.string,
+	},
+	getInitialState: function(){
+		return {
+			text: this.props.text,
+		}
+	},
+	_textChange: function(ev){
+		this.setState({
+			text: ev.target.value,
+		});
+	},
+	render: function(){
+		return React.DOM.div(null,
+			React.DOM.input({
+				value: this.state.text,
+				onChange: this._textChange,
+			}),
+			React.DOM.h3(null, 'Your name length: ' + this.state.text.length)
+		);
 	}
 });
 
 ReactDOM.render(
-	React.createElement(surname, 
-	{
-		surname: 'Sokolov'
-	}
-	),
-	document.getElementById('surname')
+	React.createElement(TextAreaCounter, {
+		text: 'Vlad',
+	}),
+	document.getElementById('input')
 );
 
 /*
