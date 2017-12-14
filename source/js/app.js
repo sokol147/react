@@ -72,89 +72,88 @@ window.onscroll= function(){
   parallax.init(wScroll);
 };
 
+// REACT
 
-var name = React.createClass({
-	propTypes: {
-		name: React.PropTypes.string.isRequired
+
+
+var logMixin = {
+	_log: function(methodName, args){
+		console.log(this.name + '::' + methodName, args);
 	},
-	getDefaultProps: function(){
-		return{
-			name: 'Vlad'
+	componentWillUpdate: function(){
+		this._log('componentWillUpdate',arguments);
+	},
+	componentDidUpdate: function(oldProps, oldState){
+		this._log('componentDidUpdate', arguments);
+		if(this.state.text.length > 10){
+			this.replaceState(oldState)
 		}
 	},
-	render: function(){
-		return React.DOM.p(null,'My name is ' + 
-		this.props.name)
-	}
-});
-
-ReactDOM.render(
-	React.createElement(name,
-		{
-			name: 'Vlad'
-		}
-	),
-	document.getElementById('name')
-);
-
-var surname = React.createClass({
-	PropsType: {
-		surname: React.PropTypes.string.isRequired
+	componentWillMount: function(){
+		this._log('componentWillMount', arguments);
 	},
+	componentDidMount: function(){
+		this._log('componentDidMount', arguments);
+	},
+	componentWillUnmount: function(){
+		this._log('componentWillUnmount', arguments);
+	},
+};
+
+var inputNick = React.createClass({
+	name: 'inputNick',
+	mixins: [logMixin],
 	getDefaultProps: function(){
 		return {
-			surname: 'Sokolov'
+			text: 'Vlad',
 		}
 	},
-	render: function(){
-		return React.DOM.p(null,'My surname is ' 
-		+ this.props.surname);
-	}
-})
-
-ReactDOM.render(
-	React.createElement(surname,
-		{
-			surname: 'Sousov'
-		}
-		),
-	document.getElementById('surname')
-)
-
-
-
-var TextAreaCounter = React.createClass({
 	propTypes: {
-		text: React.PropTypes.string,
+		defaulValue: React.PropTypes.string,
 	},
 	getInitialState: function(){
 		return {
-			text: this.props.text,
+			text: this.props.defaultValue,
 		}
 	},
 	_textChange: function(ev){
 		this.setState({
 			text: ev.target.value,
-		});
+		})
+	},
+	componentWillReceiveProps: function(){
+		this.setState({
+			text: newProps.defaultValue,
+		})
 	},
 	render: function(){
-		return React.DOM.div(null,
-			React.DOM.input({
-				value: this.state.text,
-				onChange: this._textChange,
-			}),
-			React.DOM.h3(null, 'Your name length: ' + this.state.text.length)
-		);
+		return React.DOM.div({
+			className: 'inputDiv',
+		},
+		React.DOM.p(null, 'Enter your Nickname'),
+		React.DOM.input({
+			value: this.state.text,
+			onChange: this._textChange
+		}),
+		React.DOM.p(null, 'Hello ' + this.state.text)
+		)
 	}
-});
+})
 
-ReactDOM.render(
-	React.createElement(TextAreaCounter, {
-		text: 'Vlad',
+
+/*ReactDOM.render(
+	React.createElement(input,{
+
 	}),
 	document.getElementById('input')
-);
+);*/
 
+var myInput = ReactDOM.render(
+	React.createElement(inputNick,{
+		defaultValue: 'Bob',
+	}),
+	document.getElementById('mi')
+);
 /*
 
 var my_news = [
