@@ -83,11 +83,8 @@ var logMixin = {
 	componentWillUpdate: function(){
 		this._log('componentWillUpdate',arguments);
 	},
-	componentDidUpdate: function(oldProps, oldState){
+	componentDidUpdate: function(){
 		this._log('componentDidUpdate', arguments);
-		if(this.state.text.length > 10){
-			this.replaceState(oldState)
-		}
 	},
 	componentWillMount: function(){
 		this._log('componentWillMount', arguments);
@@ -100,57 +97,85 @@ var logMixin = {
 	},
 };
 
-var inputNick = React.createClass({
-	name: 'inputNick',
-	mixins: [logMixin],
+
+
+
+var inputCounter = React.createClass({
+	name: 'inputCounter',
+	// mixins: [logMixin],
+	propTypes: {
+		defaultValue: React.PropTypes.string,
+	},
 	getDefaultProps: function(){
 		return {
-			text: 'Vlad',
+			text: '',
 		}
 	},
-	propTypes: {
-		defaulValue: React.PropTypes.string,
-	},
 	getInitialState: function(){
-		return {
+		return{
 			text: this.props.defaultValue,
 		}
 	},
-	_textChange: function(ev){
-		this.setState({
-			text: ev.target.value,
-		})
-	},
-	componentWillReceiveProps: function(){
+	componentWillReceiveProps: function(newProps){
 		this.setState({
 			text: newProps.defaultValue,
 		})
 	},
+	_nameChange: function(e){
+		this.setState({
+			text: e.target.value,
+		})
+	},
 	render: function(){
-		return React.DOM.div({
-			className: 'inputDiv',
+		console.log(this.name + '::render()');
+		var counter = null;
+		if (this.state.text.length > 0){
+			counter = React.DOM.h3(null,
+				React.createElement(Counter,{
+					count: this.state.text.length,
+				})
+			);
+		}
+		return React.DOM.div(
+		{
+			className: 'counter-field'
 		},
-		React.DOM.p(null, 'Enter your Nickname'),
+		React.DOM.p({className: 'inputHeader'},'Enter your name'),
 		React.DOM.input({
 			value: this.state.text,
-			onChange: this._textChange
+			onChange: this._nameChange,
+			placeholder: 'Your name'
 		}),
-		React.DOM.p(null, 'Hello ' + this.state.text)
+		counter
 		)
+	}
+});
+
+var Counter = React.createClass({
+	name: 'Counter',
+	// mixins: [logMixin],
+	propTypes: {
+		count: React.PropTypes.number.isRequired,
+	},
+	shouldComponentUpdate(nextProps, nextState_ignore){
+		return nextProps.count !== this.props.count;
+	},
+	render: function(){
+		console.log( this.name + '::render()');
+		return React.DOM.span(null, this.props.count);
 	}
 })
 
-
 /*ReactDOM.render(
-	React.createElement(input,{
-
+	React.createElement(inputCounter,{
+		text: 'Vlad'
 	}),
 	document.getElementById('input')
-);*/
+)*/
 
-var myInput = ReactDOM.render(
-	React.createElement(inputNick,{
-		defaultValue: 'Bob',
+var miInputCounter = ReactDOM.render(
+	React.createElement(inputCounter,{
+		defaultValue: 'Bob'
 	}),
 	document.getElementById('mi')
 );
