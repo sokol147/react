@@ -97,88 +97,69 @@ var logMixin = {
 	},
 };
 
-
-
-
-var inputCounter = React.createClass({
-	name: 'inputCounter',
-	// mixins: [logMixin],
+var inputLimit = 100;
+var inputTwitter = React.createClass({
 	propTypes: {
-		defaultValue: React.PropTypes.string,
+		text: React.PropTypes.string,
 	},
 	getDefaultProps: function(){
 		return {
 			text: '',
-		}
+		};
 	},
 	getInitialState: function(){
 		return{
-			text: this.props.defaultValue,
-		}
+			text: this.props.text,
+		};
 	},
-	componentWillReceiveProps: function(newProps){
-		this.setState({
-			text: newProps.defaultValue,
-		})
-	},
-	_nameChange: function(e){
+	_textChange: function(e){
 		this.setState({
 			text: e.target.value,
 		})
 	},
-	render: function(){
-		console.log(this.name + '::render()');
-		var counter = null;
-		if (this.state.text.length > 0){
-			counter = React.DOM.h3(null,
-				React.createElement(Counter,{
-					count: this.state.text.length,
-				})
-			);
+	componentDidUpdate: function(oldProps, oldState){
+		if(this.state.text.length > inputLimit){
+			this.replaceState(oldState);
 		}
-		return React.DOM.div(
-		{
-			className: 'counter-field'
-		},
-		React.DOM.p({className: 'inputHeader'},'Enter your name'),
-		React.DOM.input({
-			value: this.state.text,
-			onChange: this._nameChange,
-			placeholder: 'Your name'
-		}),
-		counter
+	},
+	render: function(){
+		var counter = null;
+		if(this.state.text.length > 0){
+			counter = React.DOM.h3(null,
+				React.createElement(Counter, {
+					count: this.state.text.length + '/' + inputLimit,
+				})
+			)
+		}
+		return React.DOM.div({className: 'inputWrapper'},
+			React.DOM.p(null,'Enter your message!'),
+			React.DOM.textarea({
+				value: this.state.text,
+				onChange: this._textChange,
+			}),
+			counter
 		)
 	}
 });
 
 var Counter = React.createClass({
 	name: 'Counter',
-	// mixins: [logMixin],
+	mixins: [logMixin],
 	propTypes: {
 		count: React.PropTypes.number.isRequired,
 	},
-	shouldComponentUpdate(nextProps, nextState_ignore){
-		return nextProps.count !== this.props.count;
-	},
 	render: function(){
-		console.log( this.name + '::render()');
-		return React.DOM.span(null, this.props.count);
+		return React.DOM.span({className: 'inputCounter'}, this.props.count);
 	}
 })
 
-/*ReactDOM.render(
-	React.createElement(inputCounter,{
-		text: 'Vlad'
+ReactDOM.render(
+	React.createElement(inputTwitter, {
+
 	}),
 	document.getElementById('input')
-)*/
+)
 
-var miInputCounter = ReactDOM.render(
-	React.createElement(inputCounter,{
-		defaultValue: 'Bob'
-	}),
-	document.getElementById('mi')
-);
 /*
 
 var my_news = [
