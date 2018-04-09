@@ -74,14 +74,12 @@ window.onscroll= function(){
 
 // REACT
 
-
-
-var logMixin = {
+let logMixin = {
 	_log: function(methodName, args){
 		console.log(this.name + '::' + methodName, args);
 	},
 	componentWillUpdate: function(){
-		this._log('componentWillUpdate',arguments);
+		this._log('componentWillUpdate', arguments);
 	},
 	componentDidUpdate: function(){
 		this._log('componentDidUpdate', arguments);
@@ -95,22 +93,35 @@ var logMixin = {
 	componentWillUnmount: function(){
 		this._log('componentWillUnmount', arguments);
 	},
-};
+}
 
-var inputLimit = 100;
-var inputTwitter = React.createClass({
+let Counter = React.createClass({
+	name: 'Counter',
+	// mixins: [logMixin],
+	propTypes: {
+		count: React.PropTypes.number.isRequired,
+	},
+	render: function(){
+		return React.DOM.span({className: 'counter'}, this.props.count + '/100');
+	}
+});
+
+let twitterLimit = 100;
+let inputTwitter = React.createClass({
+	name: 'inputTwitter',
+	// mixins: [logMixin],
 	propTypes: {
 		text: React.PropTypes.string,
 	},
 	getDefaultProps: function(){
 		return {
-			text: '',
-		};
+			text: 'User message',
+		}
 	},
 	getInitialState: function(){
-		return{
+		return {
 			text: this.props.text,
-		};
+		}
 	},
 	_textChange: function(e){
 		this.setState({
@@ -118,247 +129,33 @@ var inputTwitter = React.createClass({
 		})
 	},
 	componentDidUpdate: function(oldProps, oldState){
-		if(this.state.text.length > inputLimit){
+		if(this.state.text.length > twitterLimit){
 			this.replaceState(oldState);
 		}
 	},
 	render: function(){
 		var counter = null;
 		if(this.state.text.length > 0){
-			counter = React.DOM.h3(null,
-				React.createElement(Counter, {
-					count: this.state.text.length + '/' + inputLimit,
+			counter = React.DOM.div({className: 'counterWrapper'},
+				React.createElement(Counter,{
+					count: this.state.text.length,
 				})
-			)
+			);
 		}
-		return React.DOM.div({className: 'inputWrapper'},
-			React.DOM.p(null,'Enter your message!'),
-			React.DOM.textarea({
-				value: this.state.text,
-				onChange: this._textChange,
-			}),
-			counter
-		)
+		return React.DOM.div({className: 'input-block'},
+				React.DOM.textarea({
+					placeholder: 'enter message',
+					value: this.state.text,
+					onChange: this._textChange
+				},null),
+				counter
+			)
 	}
 });
 
-var Counter = React.createClass({
-	name: 'Counter',
-	mixins: [logMixin],
-	propTypes: {
-		count: React.PropTypes.number.isRequired,
-	},
-	render: function(){
-		return React.DOM.span({className: 'inputCounter'}, this.props.count);
-	}
-})
-
 ReactDOM.render(
-	React.createElement(inputTwitter, {
-
+	React.createElement(inputTwitter,{
+		text: 'Vlad'
 	}),
-	document.getElementById('input')
+	document.getElementById('one')
 )
-
-/*
-
-var my_news = [
-  {
-    author: 'Саша Печкин',
-    text: 'В четчерг, четвертого числа...',
-    bigText: 'в четыре с четвертью часа четыре чёрненьких чумазеньких чертёнка чертили чёрными чернилами чертёж.'
-  },
-  {
-    author: 'Просто Вася',
-    text: 'Считаю, что $ должен стоить 35 рублей!',
-    bigText: 'А евро 42!'
-  },
-  {
-    author: 'Гость',
-    text: 'Бесплатно. Скачать. Лучший сайт - http://localhost:3000',
-    bigText: 'На самом деле платно, просто нужно прочитать очень длинное лицензионное соглашение'
-  }
-];
-
-window.ee = new EventEmitter();
-
-var Article = React.createClass({
-  propTypes: {
-    data: React.PropTypes.shape({
-      author: React.PropTypes.string.isRequired,
-      text: React.PropTypes.string.isRequired,
-      bigText: React.PropTypes.string.isRequired
-    })
-  },
-  getInitialState: function() {
-    return {
-      visible: false
-    };
-  },
-  readmoreClick: function(e) {
-    e.preventDefault();
-    this.setState({visible: true});
-  },
-  render: function() {
-    var author = this.props.data.author,
-        text = this.props.data.text,
-        bigText = this.props.data.bigText,
-        visible = this.state.visible;
-
-    return (
-      <div className='article'>
-        <p className='news__author'>{author}:</p>
-        <p className='news__text'>{text}</p>
-        <a href="#"
-          onClick={this.readmoreClick}
-          className={'news__readmore ' + (visible ? 'none': '')}>
-          Подробнее
-        </a>
-        <p className={'news__big-text ' + (visible ? '': 'none')}>{bigText}</p>
-      </div>
-    )
-  }
-});
-
-var News = React.createClass({
-  propTypes: {
-    data: React.PropTypes.array.isRequired
-  },
-  getInitialState: function() {
-    return {
-      counter: 0
-    }
-  },
-  render: function() {
-    var data = this.props.data;
-    var newsTemplate;
-
-    if (data.length > 0) {
-      newsTemplate = data.map(function(item, index) {
-        return (
-          <div key={index}>
-            <Article data={item} />
-          </div>
-        )
-      })
-    } else {
-      newsTemplate = <p>К сожалению новостей нет</p>
-    }
-
-    return (
-      <div className='news'>
-        {newsTemplate}
-        <strong
-          className={'news__count ' + (data.length > 0 ? '':'none') }>Всего новостей: {data.length}</strong>
-      </div>
-    );
-  }
-});
-
-var Add = React.createClass({
-  getInitialState: function() {
-    return {
-      agreeNotChecked: true,
-      authorIsEmpty: true,
-      textIsEmpty: true
-    };
-  },
-  componentDidMount: function() {
-    ReactDOM.findDOMNode(this.refs.author).focus();
-  },
-  onBtnClickHandler: function(e) {
-    e.preventDefault();
-    var textEl = ReactDOM.findDOMNode(this.refs.text);
-
-    var author = ReactDOM.findDOMNode(this.refs.author).value;
-    var text = textEl.value;
-
-    var item = [{
-      author: author,
-      text: text,
-      bigText: '...'
-    }];
-
-    window.ee.emit('News.add', item);
-
-    textEl.value = '';
-    this.setState({textIsEmpty: true});
-  },
-  onCheckRuleClick: function(e) {
-    this.setState({agreeNotChecked: !this.state.agreeNotChecked});
-  },
-  onFieldChange: function(fieldName, e) {
-    if (e.target.value.trim().length > 0) {
-      this.setState({[''+fieldName]:false})
-    } else {
-      this.setState({[''+fieldName]:true})
-    }
-  },
-  render: function() {
-    var agreeNotChecked = this.state.agreeNotChecked,
-        authorIsEmpty = this.state.authorIsEmpty,
-        textIsEmpty = this.state.textIsEmpty;
-    return (
-      <form className='add cf'>
-        <input
-          type='text'
-          className='add__author'
-          onChange={this.onFieldChange.bind(this, 'authorIsEmpty')}
-          placeholder='Ваше имя'
-          ref='author'
-        />
-        <textarea
-          className='add__text'
-          onChange={this.onFieldChange.bind(this, 'textIsEmpty')}
-          placeholder='Текст новости'
-          ref='text'
-        ></textarea>
-        <label className='add__checkrule'>
-          <input type='checkbox' ref='checkrule' onChange={this.onCheckRuleClick}/>Я согласен с правилами
-        </label>
-
-        <button
-          className='add__btn'
-          onClick={this.onBtnClickHandler}
-          ref='alert_button'
-          disabled={agreeNotChecked || authorIsEmpty || textIsEmpty}
-          >
-          Опубликовать новость
-        </button>
-      </form>
-    );
-  }
-});
-
-var App = React.createClass({
-  getInitialState: function() {
-    return {
-      news: my_news
-    };
-  },
-  componentDidMount: function() {
-    var self = this;
-    window.ee.addListener('News.add', function(item) {
-      var nextNews = item.concat(self.state.news);
-      self.setState({news: nextNews});
-    });
-  },
-  componentWillUnmount: function() {
-    window.ee.removeListener('News.add');
-  },
-  render: function() {
-    console.log('render');
-    return (
-      <div className='app'>
-        <Add />
-        <h3>Новости</h3>
-        <News data={this.state.news} />
-      </div>
-    );
-  }
-});
-
-ReactDOM.render(
-  <App />,
-  document.getElementById('root')
-);*/
