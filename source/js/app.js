@@ -144,6 +144,9 @@ let Excel = React.createClass({
 			edit: null,
 		};
 	},
+	_save: function(){
+
+	},
 	render: function(){
 		return (
 			React.DOM.table({className: 'compare_table'},
