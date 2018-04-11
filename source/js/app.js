@@ -109,7 +109,109 @@ let data = [
   ['She: A History of Adventure','H. Rider Haggard','English','1877','100 million']
 ]
 
+let Excel = React.createClass({
+	displayName: 'Excel',
+	getInitialState: function(){
+		return {
+			data: this.props.initialData,
+			sortby: null,
+			descending: false,
+			edit: null,
+		};
+	},
+	propTypes: {
+		header: React.PropTypes.arrayOf(
+			React.PropTypes.string
+		),
+		initialData: React.PropTypes.arrayOf(
+			React.PropTypes.arrayOf(
+				React.PropTypes.string
+			)
+		),
+	},
+	_sort: function(e){
+		let column = e.target.cellIndex;
+		let data = this.state.data.slice();
+		let descending = this.state.sortby === column && !this.state.descending;
+		data.sort(function(a, b){
+			return descending ? (a[column] < b[column] ? 1 : -1) : (a[column] > b[column] ? 1 : -1);
+		});
+		this.setState({
+			data: data,
+			sortby: column,
+			descending: descending,
+		});
+	},
+	_showEditor: function(e){
+		this.setState({edit: {
+			row: parseInt(e.target.dataset.row, 10),
+			cell: e.target.cellIndex,
+		}});
+	},
+	_save: function(e){
+		e.preventDefault();
+		let input = e.target.firstChild;
+		let data = this.state.data.slice();
+		state: data[this.state.edit.row][this.state.edit.cell] = input.value;
+		this.setState({
+			edit: null,
+			data: data,
+		})
+	},
+	render: function(){
+		return (
+			React.DOM.table({
+				className: 'table',
+			},
+				React.DOM.thead({
+					className: 'table__head',
+					onClick: this._sort,
+				},
+					React.DOM.tr(null,
+						this.props.header.map(function(title, idx){
+							if (this.state.sortby === idx){
+								title += this.state.descending ? '\u25B2' : '\u25BC'
+							}
+							return React.DOM.th({key: idx}, title);
+						}, this)
+					)
+				),
+				React.DOM.tbody({onDoubleClick: this._showEditor},
+					this.state.data.map(function(row, rowidx){
+						return (
+							React.DOM.tr({key: rowidx},
+								row.map(function(cell, idx){
+									let content = cell;
+									let edit = this.state.edit;
+									if(edit && edit.row === rowidx && edit.cell === idx){
+										content = React.DOM.form({onSubmit: this._save},
+											React.DOM.input({
+												type: 'text',
+												defaultValue: content,
+											})
+										);
+									}
+									return React.DOM.td({
+										key: idx,
+										'data-row': rowidx
+									}, content);
+								}, this)
+							)
+						);
+					}, this)
+				)
+			)
+		);
+	}
+});
 
+ReactDOM.render(
+	React.createElement(Excel, {
+		header: header,
+		initialData: data,
+	}),
+	document.getElementById('two')
+);
 
 /*
 let Counter = React.createClass({
