@@ -136,25 +136,6 @@ let Excel = React.createClass({
 		});
 		console.log('sort complite');
 	},
-	_showEditor: function(e){
-		this.setState({
-			edit: {
-				row: parseInt(e.target.dataset.row, 10),
-				cell: e.target.callIndex,
-			}
-		});
-		console.log('open editor');
-	},
-	_save: function(e){
-		e.preventDdfault();
-		let input = e.target.firstChild;
-		let data = this.state.data.slice();
-		state: data[this.state.edit.row][this.state.edit.cell] = input.value;
-		this.setState({
-			edit: null,
-			data: data,
-		})
-	},
 	getInitialState: function(){
 		return {
 			data: this.props.initialData,
