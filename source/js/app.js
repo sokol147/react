@@ -111,12 +111,15 @@ let data = [
 
 let Excel = React.createClass({
 	displayName: 'Excel',
+	_preSearchData: null,
+	_log: [],
 	getInitialState: function(){
 		return {
 			data: this.props.initialData,
 			sortby: null,
 			descending: false,
 			edit: null,
+			search: false,
 		};
 	},
 	propTypes: {
@@ -128,6 +131,34 @@ let Excel = React.createClass({
 				React.PropTypes.string
 			)
 		),
+	},
+	componentDidMount: function(){
+		document.onkeydown = function(e){
+			if(e.altKey && e.shiftKey && e.kayCOde === 82){
+				// ALT+SHIFT+R(elpay)
+				this._replay();
+			}
+		}.bind(this);
+	},
+	_replay: function(){
+		if(this._log.length === 0){
+			console.warn('Condition for program is empty');
+			return;
+		}
+		let idx = -1;
+		let interval = setInterval(function(){
+			idx++
+			if(idx === this._log.length -1){
+				clearInterval(interval);
+			}
+			this.setState(this._log[idx]);
+		}.bind(this), 1000);
+	},
+	_logSetState: function(){
+		this._log.push(JSON.parse(JSON.stringify(
+			this._log.length === 0 ? this.state : newState
+		)));
+		this.setSteta(newState);
 	},
 	_sort: function(e){
 		let column = e.target.cellIndex;
@@ -158,7 +189,58 @@ let Excel = React.createClass({
 			data: data,
 		})
 	},
-	render: function(){
+	_renderToolbar: function(){
+		return React.DOM.div({className:'toolbar'},
+			React.DOM.button({
+				onClick: this._toggleSearch
+			}, 'Serach'),
+			React.DOM.a({
+				onClick: this._download.bind(this, 'json'),
+				href: 'data.json'
+			}, 'Export JSON'),
+			React.DOM.a({
+				onClick: this._download.bind(this, 'csv'),
+				href: 'data.csv'
+			}, 'Export CSV')
+		);
+	},
+	_download: function(format, e){
+		let contents = format === 'json'
+			? JSON.stringify(this.state.data)
+			: this.state.data.reduce(function(result, row){
+			return result
+				+ row.reduce(function(rowresult, cell, idx){
+					return rowresult
+						+ '"'
+						+ cell.replace(/"/g,'""')
+						+ '"'
+						+ (idx < row.length -1 ? ',' : '');
+			}, '')
+			+ "\n";
+		}, '');
+		let URL = window.URL || window.webkitURL;
+		let blob = new Blob([contents], {type: 'text/' + format});
+		e.target.href = URL.craateObjectURL(blob);
+		e.target.download = 'data.' + format;
+	},
+	_renderSearch: function(){
+		if(!this.state.search){
+			return null;
+		}
+		return (
+			React.DOM.tr({onChange: this._search},
+				this.props.header.map(function(_ignore, idx){
+					return React.DOM.td({key: idx},
+						React.DOM.input({
+							type: 'text',
+							'data-idx': idx,
+						})
+					);
+				})
+			)
+		);
+	},
+	_renderTable: function(){
 		return (
 			React.DOM.table({
 				className: 'table',
@@ -177,6 +259,7 @@ let Excel = React.createClass({
 					)
 				),
 				React.DOM.tbody({onDoubleClick: this._showEditor},
+					this._renderSearch(),
 					this.state.data.map(function(row, rowidx){
 						return (
 							React.DOM.tr({key: rowidx},
@@ -200,6 +283,42 @@ let Excel = React.createClass({
 						);
 					}, this)
 				)
+			)
+		);
+	},
+	_toggleSearch: function(){
+		if(this.state.search){
+			this.setState({
+				data: this._preSearchData,
+				search: false,
+			});
+			this._preSearchData = null;
+		} else {
+			this._preSearchData = this.state.data;
+			this.setState({
+				search: true,
+			});
+		}
+	},
+	_search: function(e){
+		let needle = e.target.value.toLowerCase();
+		if(!needle){
+			this.setState({
+				data: this._preSearchData
+			});
+			return;
+		}
+		let idx = e.target.dataset.idx;
+		let searchdata = this._preSearchData.filter(function(row){
+			return row[idx].toString().toLowerCase().indexOf(needle) > -1;
+		});
+		this.setState({data: searchdata});
+	},
+	render: function(){
+		return (
+			React.DOM.div(null,
+				this._renderTable(),
+				this._renderToolbar()
 			)
 		);
 	}
