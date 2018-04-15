@@ -240,6 +240,34 @@ let Excel = React.createClass({
 			)
 		);
 	},
+	/*_renderTableJsx: function(){
+		let state = this.state;
+		return (
+			<table className='table'>
+				<thead onClick={this._sort} className='table__head'>
+					<tr>
+						{this.props.header.map(function(title, idx){
+							if (state.sortby === idx) {
+								title += state.descending ? '\u25B2' : '\u25BC';
+							}
+							return <th key={idx}>{title}</th>;
+						})}
+					</tr>
+				</thead>
+				<tbody onDoubleClick={this._showEditor}>
+					{state.data.map(function(row, idx){
+						return (
+							<tr key={idx}>
+								{row.map(function(cell, idx){
+									return <td key={idx}>{cell}</td>;
+								})}
+							</tr>
+						);
+					})}
+				</tbody>
+			</table>
+		);
+	},*/
 	_renderTable: function(){
 		return (
 			React.DOM.table({
@@ -318,6 +346,7 @@ let Excel = React.createClass({
 		return (
 			React.DOM.div(null,
 				this._renderTable(),
+				// this._renderTableJsx(),
 				this._renderToolbar()
 			)
 		);
