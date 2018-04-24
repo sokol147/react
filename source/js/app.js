@@ -98,7 +98,7 @@ let logMixin = {
 
 
 
-let header = ['Book', 'Author', 'Language', 'Published', 'Sales'];
+/*let header = ['Book', 'Author', 'Language', 'Published', 'Sales'];
 let data = [
   ['The Lord of the Rings', 'J. R. R. Tolkien', 'English', '1954-1955', '150 million'],
   ['Le Petit Prince (The Little Peince)','Antoine de Saint-Exupery','French','1943','140 million'],
@@ -240,34 +240,6 @@ let Excel = React.createClass({
 			)
 		);
 	},
-	/*_renderTableJsx: function(){
-		let state = this.state;
-		return (
-			<table className='table'>
-				<thead onClick={this._sort} className='table__head'>
-					<tr>
-						{this.props.header.map(function(title, idx){
-							if (state.sortby === idx) {
-								title += state.descending ? '\u25B2' : '\u25BC';
-							}
-							return <th key={idx}>{title}</th>;
-						})}
-					</tr>
-				</thead>
-				<tbody onDoubleClick={this._showEditor}>
-					{state.data.map(function(row, idx){
-						return (
-							<tr key={idx}>
-								{row.map(function(cell, idx){
-									return <td key={idx}>{cell}</td>;
-								})}
-							</tr>
-						);
-					})}
-				</tbody>
-			</table>
-		);
-	},*/
 	_renderTable: function(){
 		return (
 			React.DOM.table({
@@ -346,7 +318,6 @@ let Excel = React.createClass({
 		return (
 			React.DOM.div(null,
 				this._renderTable(),
-				// this._renderTableJsx(),
 				this._renderToolbar()
 			)
 		);
@@ -359,8 +330,356 @@ ReactDOM.render(
 		initialData: data,
 	}),
 	document.getElementById('two')
-);
+);*/
 
+
+let headers = ['Title', 'Year', 'Rating', 'Comments'];
+let data = [['Test', '2015', '3', 'meh']];
+
+
+let wineMap = React.createClass({
+  displayName: 'wineMap',
+  
+  propTypes: {
+    headers: React.PropTypes.arrayOf(
+      React.PropTypes.string
+    ),
+    initialData: React.PropTypes.arrayOf(
+      React.PropTypes.arrayOf(
+        React.PropTypes.string
+      )
+    ),
+  },
+
+  getInitialState: function() {
+    return {
+      data: this.props.initialData,
+      sortby: null,
+      descending: false,
+      edit: null, // [row index, cell index],
+      search: false,
+    };
+  },
+  
+  _sort: function(e) {
+    var column = e.target.cellIndex;
+    var data = this.state.data.slice();
+    var descending = this.state.sortby === column && !this.state.descending;
+    data.sort(function(a, b) {
+      return descending 
+        ? a[column] < b[column]
+        : a[column] > b[column];
+    });
+    this.setState({
+      data: data,
+      sortby: column,
+      descending: descending,
+    });
+  },
+  
+  _showEditor: function(e) {
+    this.setState({edit: {
+      row: parseInt(e.target.dataset.row, 10),
+      cell: e.target.cellIndex,
+    }});
+  },
+  
+  _save: function(e) {
+    e.preventDefault();
+    var input = e.target.firstChild;
+    var data = this.state.data.slice();
+    data[this.state.edit.row][this.state.edit.cell] = input.value;
+    this.setState({
+      edit: null,
+      data: data,
+    });
+  },
+  
+  _preSearchData: null,
+  
+  _toggleSearch: function() {
+    if (this.state.search) {
+      this.setState({
+        data: this._preSearchData,
+        search: false,
+      });
+      this._preSearchData = null;
+    } else {
+      this._preSearchData = this.state.data;
+      this.setState({
+        search: true,
+      });
+    }
+  },
+  
+  _search: function(e) {
+    var needle = e.target.value.toLowerCase();
+    if (!needle) {
+      this.setState({data: this._preSearchData});
+      return;
+    }
+    var idx = e.target.dataset.idx;
+    var searchdata = this._preSearchData.filter(function (row) {
+      return row[idx].toString().toLowerCase().indexOf(needle) > -1;
+    });
+    this.setState({data: searchdata});
+  },
+  
+  _download: function (format, ev) {
+    var contents = format === 'json'
+      ? JSON.stringify(this.state.data)
+      : this.state.data.reduce(function(result, row) {
+          return result
+            + row.reduce(function(rowresult, cell, idx) {
+                return rowresult 
+                  + '"' 
+                  + cell.replace(/"/g, '""')
+                  + '"'
+                  + (idx < row.length - 1 ? ',' : '');
+              }, '')
+            + "\n";
+        }, '');
+
+    var URL = window.URL || window.webkitURL;
+    var blob = new Blob([contents], {type: 'text/' + format});
+    ev.target.href = URL.createObjectURL(blob);
+    ev.target.download = 'data.' + format;
+  },
+  
+  render: function() {
+    return (
+      <div className='wineMap'>
+        {this._renderToolbar()}
+        {this._renderTable()}
+      </div>
+    );
+  },
+  
+  _renderToolbar: function() {
+    return (
+      <div className="toolbar">
+        <button onClick={this._toggleSearch} className='wine__btn'>Search</button>
+        <a onClick={this._download.bind(this, 'json')} 
+          href="data.json" className='wine__btn'>Export JSON</a>
+        <a onClick={this._download.bind(this, 'csv')} 
+          href="data.csv" className='wine__btn'>Export CSV</a>
+      </div>
+    );
+  },
+  
+  _renderSearch: function() {
+    if (!this.state.search) {
+      return null;
+    }
+    return (
+      <tr onChange={this._search}>
+        {this.props.headers.map(function(_ignore, idx) {
+          return <td key={idx}><input type="text" data-idx={idx}/></td>;
+        })}
+      </tr>
+    );
+  },
+  
+  _renderTable: function() {
+    return (
+      <table>
+        <thead onClick={this._sort}>
+          <tr>{
+            this.props.headers.map(function(title, idx) {
+              if (this.state.sortby === idx) {
+                title += this.state.descending ? ' \u2191' : ' \u2193';
+              }
+              return <th key={idx}>{title}</th>;
+            }, this)
+          }</tr>
+        </thead>
+        <tbody onDoubleClick={this._showEditor}>
+          {this._renderSearch()}
+          {this.state.data.map(function (row, rowidx) {
+            return (
+              <tr key={rowidx}>{
+                row.map(function (cell, idx) {
+                  var content = cell;
+                  var edit = this.state.edit;
+                  if (edit && edit.row === rowidx && edit.cell === idx) {
+                    var content = (
+                      <form onSubmit={this._save}>
+                        <input type="text" defaultValue={cell} />
+                      </form>
+                    );
+                  }
+                  return <td key={idx} data-row={rowidx}>{content}</td>;
+                }, this)}
+              </tr>
+            );
+          }, this)}
+        </tbody>
+      </table>
+    );
+  }
+});
+
+// Rating component
+let Rating = React.createClass({
+  displayName: 'Rating',
+  PropTypes: {
+    defaultValue: React.PropTypes.number,
+    readonly: React.PropTypes.bool,
+    max: React.PropTypes.number,
+  },
+  defaultProps(){
+    let defaultValue = 0,
+        max = 5;
+  },
+  construcror(props){
+    this.state = {
+      rating: props.defaultValue,
+      tmpRating: props.defaultValue,
+    }
+  },
+  getValue(){
+    return this.state.rating;
+  },
+  setTemp(rating){
+    this.setState({tmpRating: rating});
+  },
+  setRating(rating){
+  	this.setState({
+  		tmpRating: rating,
+  		rating: rating,
+  	})
+  },
+  reset(){
+    this.setTemp(this.state.rating);
+  },
+  compinentWillReceiveProps(nextProps){
+    this.setRating(nextProps.defaultValue);
+  },
+  render(){
+    const stars = [];
+    for(let i = 1; i <= this.props.max; i++){
+      stars.push(
+        <span
+          className={i <= this.state.tmpRating ? 'RatingOn' : null}
+          key = {i}
+          onClick = {!this.props.readonly && this.setRating.bind(this, i)}
+          onMouseOver = {!this.props.readonly && this.setTemp.bind(this, i)}
+        >
+          &#9734;
+        </span>
+      );
+    }
+    return(
+      <div
+        className = {classNames({
+          'Rating' : true,
+          'RatingReadonly': this.props.readonly,
+        })}
+        onMouseOut = {this.reset.bind(this)}
+      >
+      {stars}
+      {this.props.readonly || !this.props.id ? null :
+        <input
+          type='hidden'
+          id={this.props.id}
+          value={this.state.rating}
+        />
+      }
+      </div>
+    );
+  }
+});
+// Suggest component
+let Suggest = React.createClass({
+	displayName: 'Suggest',
+	propTypes: {
+		options: React.PropTypes.arrayOf(React.PropTypes.string),
+	},
+	getValue(){
+		return this.refs.lowlevelinput.value;
+	},
+  render(){
+  	const randomid = Math.rendom().toString(16).substring(2);
+  	return (
+  		<div>
+  			<input 
+  				list={randomid}
+  				dafaultValue={this.props.dafaultValue}
+  				ref='lowlevelinput'
+  				id={this.props.id} />
+  				<datalist id={randomid}>{
+  					this.props.option.map((item, idx) =>
+  						<option value={item} key={idx}/>
+  					)
+  				}</datalist>
+  		</div>
+  	)
+  }
+});
+// FormInput component
+let formInput = React.createClass({
+	PropTypes: {
+		type: React.PropTypes.oneOf(['year', 'suggest','rating','text','input']),
+		id: React.PropTypes.string,
+		options: React.PropTypes.array,
+		defaultValue: React.PropTypes.any,
+	},
+  render(){
+    const common = {
+    	id: this.props.id,
+    	ref: 'input',
+    	defaultValue: this.props.defaultValue,
+    };
+    switch (this.props.type){
+    	case 'year':
+    	  return(
+          <input
+            {...common}
+            type='number'
+            defaultValue={this.props.defaultValue || new Date().getFullYear()}
+          />
+    	  );
+    	case 'suggest':
+    	  return <Suggest {...common}
+    	    options={this.props.options}/>
+    	case 'rating':
+    	  return (
+          <Rating
+            {...common}
+            defaultValue={parseInt(this.props.defaultValue,10)}
+          />
+    	  )
+    	case 'text':
+    	  return <textarea {...common}/>;
+    	default:
+    	  return <input {...common} type='text'/>;
+    }
+  }
+})
+// Form compontnt
+let form = React.createClass({
+	PropTypes: {
+		fields: React.PropTypes.arrayOf(React.PropTypes.shape({
+    id: React.PropTypes.string.isRequired,
+    label: React.PropTypes.string.isRequired,
+    type: React.PropTypes,
+    options: React.PropTypes.arrayOf(React.PropTypes.string),
+		})).isRequired,
+		initialData: React.PropTypes.object,
+		readonly: React.PropTypes.boll,
+	},
+	render(){
+
+	}
+})
+
+ReactDOM.render(
+	React.createElement(wineMap,{
+		headers: headers,
+		initialData: data,
+	}),
+	document.getElementById('three')
+)
 /*
 let Counter = React.createClass({
 	name: 'Counter',
